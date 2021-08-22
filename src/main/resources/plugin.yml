@@ -1,0 +1,8 @@
+name: Anti-Violence-Plugin
+version: '${version}'
+main: net.kunmc.lab.antiviolence.AntiViolencePlugin
+api-version: 1.16
+authors: [ Yu_212 ]
+permissions:
+  antiviolence.configcommand:
+    default: op
