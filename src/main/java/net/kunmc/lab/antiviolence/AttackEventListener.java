@@ -14,6 +14,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
 public class AttackEventListener implements Listener {
+    private boolean isRevenge;
+
     @EventHandler
     public void onAttack(EntityDamageByEntityEvent event) {
         ConfigManager configManager = AntiViolencePlugin.getInstance().getConfigManager();
@@ -26,10 +28,14 @@ public class AttackEventListener implements Listener {
         if (!(event.getEntity() instanceof CraftLivingEntity)) {
             return;
         }
+        if (isRevenge) {
+            return;
+        }
         CraftLivingEntity revenger = (CraftLivingEntity)event.getEntity();
         double damageMultiplier = configManager.getDamageMultiplier();
         double returnedAmount = event.getFinalDamage() * damageMultiplier;
         boolean immediatelyKill = configManager.isImmediatelyKill();
+        isRevenge = true;
         if (event.getDamager() instanceof CraftPlayer) {
             CraftPlayer damager = (CraftPlayer)event.getDamager();
             if (immediatelyKill) {
@@ -48,6 +54,7 @@ public class AttackEventListener implements Listener {
                 }
             }
         }
+        isRevenge = false;
     }
 
     private void revenge(CraftPlayer damager, CraftLivingEntity revenger, float returnedAmount) {
